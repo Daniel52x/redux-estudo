@@ -6,30 +6,62 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Redux</title>
     <script src="./redux.min.js"></script>
+    <script src="./immer.umd.production.min.js"></script>
 </head>
 <body>
-    <div id="caixa" style="background: blue; height: 50px; width: 10px;"></div>
     <script>
-        function reducer(state = 0, action) {
+
+        const array1 = [0, 1, 2, 3, 4];
+        const array2 = [...array1];
+
+        // array1.pop()
+        // console.log(array2 === array1);
+        // console.log(array1);
+        // console.log(array2);
+
+        const obj1 = {
+            nome: 'Daniel',
+            idade: 31
+        }
+        const obj2 = immer.produce(obj1, (draft) => {
+            draft.idade = 35
+        })
+
+        // console.log(obj2)
+
+
+        // const obj2 = { ...obj1 };
+        // const obj3 = Object.assign({}, obj1)
+        // console.log(obj2 === obj1)
+
+        const initialState = {
+            nome: 'Daniel',
+            sobre: {
+                dados: {
+                    idade: 31
+                }
+            }
+        }
+
+        const reducer = immer.produce((state, action) => {
             switch(action.type) {
-                case 'MODIFICAR_WIDTH':
-                    // const caixa = document.getElementById('caixa');
-                    // caixa.style.width = action.payload + 'px';
-                    return action.payload;
-                default:
-                    return state            }
-        }
+                case 'MUDAR_NOME':
+                    state.nome = action.payload
+                    break;
+                case 'MUDAR_IDADE':
+                    state.sobre.dados.idade = action.payload;
+                    break;
+            }
+        }, initialState)
 
-        const store = Redux.createStore(reducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());        
-        function render() {
-            const caixa = document.getElementById('caixa');
-            caixa.style.width = store.getState() + 'px';
-        }
+        const store = Redux.createStore(reducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());  
         
-        store.subscribe(render);
-        store.dispatch({ type: 'MODIFICAR_WIDTH', payload: 100 })
+        store.dispatch({ type: 'MUDAR_NOME', payload: 'Maria' })
+        store.dispatch({ type: 'MUDAR_NOME', payload: 'Joao' })
+        store.dispatch({ type: 'MUDAR_IDADE', payload: 20 })
+        store.dispatch({ type: 'MUDAR_IDADE', payload: 35 })
+        store.dispatch({ type: 'TESTE', payload: 'Pedro' })
 
-        console.log(store.getState())
     </script>
 </body>
 </html>
