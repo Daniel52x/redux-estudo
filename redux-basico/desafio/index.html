@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redux</title>
+    <script src="../redux.min.js"></script>
+    <script src="../immer.umd.production.min.js"></script>
+</head>
+<body>
+    <p>Nome: <span id="nomeAluno"></span></p>
+    <p>Email: <span id="emailAluno"></span></p>
+    <p>Dias Restantes: <span id="diasRestantes"></span></p>
+
+    <script type="module">
+        import store from './configureDesafio.js'
+        import { incrementarTempo, reduzirTempo } from './aluno/aluno.js'
+        import { completarAula, completarCurso } from './aulas/aulas.js'
+
+        store.subscribe(() => {
+            console.log('Funcionou')
+        })
+
+        function render() {
+            const { aluno, aulas } = store.getState()
+            document.querySelector('#nomeAluno').innerHTML = aluno.nome;
+            document.querySelector('#emailAluno').innerHTML = aluno.email;
+            document.querySelector('#diasRestantes').innerHTML = aluno.diasRestantes;
+        }
+
+        store.subscribe(render)
+
+        store.dispatch(incrementarTempo())
+        store.dispatch(reduzirTempo())
+        store.dispatch(reduzirTempo())
+        store.dispatch(reduzirTempo())
+        store.dispatch(reduzirTempo())
+        store.dispatch(reduzirTempo())
+        store.dispatch(completarAula(4))
+        store.dispatch(completarAula(2))
+    </script>
+</body>
+</html>
