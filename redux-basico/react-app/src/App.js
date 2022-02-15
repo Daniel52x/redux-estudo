@@ -7,7 +7,7 @@ function App() {
   const [password, setPassword] = React.useState('');
 
   const dispatch = useDispatch();
-  const { data } = useSelector((state) => state.login.user);
+  // const { data } = useSelector((state) => state.login.user);
 
   function handleSubmit(event) {
     event.preventDefault();
@@ -40,7 +40,7 @@ function App() {
           }}
         />
         <button>Enviar</button>
-        <p>{data?.email}</p>
+        {/* <p>{data?.email}</p> */}
       </form>
     </div>
   );
