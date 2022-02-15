@@ -1,5 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { somar } from './store/contador';
 import { login } from './store/login';
 
 function App() {
@@ -7,7 +8,6 @@ function App() {
   const [password, setPassword] = React.useState('');
 
   const dispatch = useDispatch();
-  // const { data } = useSelector((state) => state.login.user);
 
   function handleSubmit(event) {
     event.preventDefault();
@@ -40,7 +40,9 @@ function App() {
           }}
         />
         <button>Enviar</button>
-        {/* <p>{data?.email}</p> */}
+        <button type="button" onClick={() => dispatch(somar(5))}>
+          Somar
+        </button>
       </form>
     </div>
   );
