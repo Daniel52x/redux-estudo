@@ -1,13 +1,19 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { somar } from './store/contador';
-import { login } from './store/login';
+import { autoLogin, login } from './store/login';
 
 function App() {
   const [username, setUsername] = React.useState('');
   const [password, setPassword] = React.useState('');
-
   const dispatch = useDispatch();
+
+  const { data } = useSelector((state) => state.login.user);
+  console.log(data);
+
+  React.useEffect(() => {
+    dispatch(autoLogin());
+  }, [dispatch]);
 
   function handleSubmit(event) {
     event.preventDefault();
@@ -44,6 +50,7 @@ function App() {
           Somar
         </button>
       </form>
+      <p>{data?.email}</p>
     </div>
   );
 }

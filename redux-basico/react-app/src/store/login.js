@@ -1,5 +1,6 @@
 import { combineReducers } from '@reduxjs/toolkit';
 import createAsyncSlice from './helper/createAsyncSlice';
+import getLocalStorage from './helper/getLocalstorage';
 /**
  * Cria um slice com uma função assíncrona
  * @param {Object} config
@@ -10,6 +11,31 @@ import createAsyncSlice from './helper/createAsyncSlice';
  */
 const token = createAsyncSlice({
   name: 'token',
+  initialState: {
+    data: {
+      token: getLocalStorage('token', null),
+    },
+  },
+  reducers: {
+    fetchSuccess: {
+      reducer(state, action) {
+        state.loading = false;
+        state.data = action.payload;
+        state.error = null;
+      },
+      prepare(payload) {
+        return {
+          payload,
+          meta: {
+            localStorage: {
+              key: 'token',
+              value: payload.token,
+            },
+          },
+        };
+      },
+    },
+  },
   fetchConfig: (user) => ({
     url: 'https://dogsapi.origamid.dev/json/jwt-auth/v1/token',
     options: {
@@ -47,4 +73,10 @@ export const login = (user) => async (dispatch) => {
     const { payload } = await dispatch(fetchToken(user));
     if (payload.token !== undefined) await dispatch(fetchUser(payload.token));
   } catch (error) {}
+};
+
+export const autoLogin = () => async (dispatch, getState) => {
+  const state = getState();
+  const { token } = state.login.token.data;
+  if (token) await dispatch(fetchUser(token));
 };
