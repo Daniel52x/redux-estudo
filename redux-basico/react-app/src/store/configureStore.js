@@ -3,15 +3,13 @@ import {
   configureStore,
   getDefaultMiddleware,
 } from '@reduxjs/toolkit';
-import contador from './contador';
 import login from './login';
-import modal from './modal';
-// import logger from './middleware/logger';
+import photos from './photos';
 import localStorage from './middleware/localStorage';
 
 const middleware = [...getDefaultMiddleware(), localStorage];
 
-const reducer = combineReducers({ contador, modal, login });
+const reducer = combineReducers({ login, photos });
 const store = configureStore({ reducer, middleware });
 
 export default store;
